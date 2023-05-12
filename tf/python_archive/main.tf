@@ -23,10 +23,9 @@ variable "exclude_patterns" {
 # Content
 
 locals {
-  output_path = "${var.archive_name}.${var.type}"
-  excludes    = setunion(
-    [for pattern in var.exclude_patterns : fileset(var.source_dir, pattern)]
-  )
+  output_path          = "${var.archive_name}.${var.type}"
+  excludes_per_pattern = [for pattern in var.exclude_patterns : fileset(var.source_dir, pattern)]
+  excludes             = flatten(local.excludes_per_pattern)
 }
 
 data "archive_file" "code_archive" {
@@ -40,6 +39,10 @@ data "archive_file" "code_archive" {
 
 output output_path {
   value = local.output_path
+}
+
+output "excludes_per_pattern" {
+  value = local.excludes_per_pattern
 }
 
 output excludes {
