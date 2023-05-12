@@ -4,7 +4,7 @@ variable "source_dir" {
   type = string
 }
 
-variable "archive_name" {
+variable "name" {
   type = string
 }
 
@@ -23,7 +23,7 @@ variable "exclude_patterns" {
 # Content
 
 locals {
-  output_path          = "${var.archive_name}.${var.type}"
+  output_path          = "${var.name}.${var.type}"
   excludes_per_pattern = [for pattern in var.exclude_patterns : fileset(var.source_dir, pattern)]
   excludes             = flatten(local.excludes_per_pattern)
 }
@@ -35,7 +35,7 @@ data "archive_file" "code_archive" {
   excludes    = local.excludes
 }
 
-# Output
+# Outputs
 
 output output_path {
   value = local.output_path
