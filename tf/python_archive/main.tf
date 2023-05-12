@@ -31,10 +31,10 @@ output output_path {
   value = local.output_path
 }
 
-output "excludes" {
+output excludes {
   value = local.excludes
 }
 
-output "archive_file" {
+output file {
   value = data.archive_file.code_archive
 }
