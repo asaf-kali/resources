@@ -38,10 +38,10 @@ data "archive_file" "code_archive" {
 # Outputs
 
 output output_path {
-  value = local.output_path
+  value = data.archive_file.code_archive.output_path
 }
 
-output "excludes_per_pattern" {
+output excludes_per_pattern {
   value = local.excludes_per_pattern
 }
 
