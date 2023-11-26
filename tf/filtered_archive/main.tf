@@ -20,6 +20,11 @@ variable "exclude_patterns" {
   ]
 }
 
+variable "output_file_mode" {
+  type    = string
+  default = "0644"
+}
+
 # Content
 
 locals {
@@ -29,10 +34,11 @@ locals {
 }
 
 data "archive_file" "code_archive" {
-  type        = var.type
-  source_dir  = var.source_dir
-  output_path = local.output_path
-  excludes    = local.excludes
+  type             = var.type
+  source_dir       = var.source_dir
+  output_path      = local.output_path
+  output_file_mode = var.output_file_mode
+  excludes         = local.excludes
 }
 
 # Outputs
