@@ -14,7 +14,7 @@ variable "type" {
 }
 
 variable "exclude_patterns" {
-  type    = list(string)
+  type = list(string)
   default = [
     "**/__pycache__/**",
   ]
@@ -30,7 +30,7 @@ variable "output_file_mode" {
 locals {
   output_path          = "${var.name}.${var.type}"
   excludes_per_pattern = [for pattern in var.exclude_patterns : fileset(var.source_dir, pattern)]
-  excludes             = flatten(local.excludes_per_pattern)
+  excludes = flatten(local.excludes_per_pattern)
 }
 
 data "archive_file" "code_archive" {
@@ -57,4 +57,8 @@ output excludes {
 
 output file {
   value = data.archive_file.code_archive
+}
+
+output "output_sha" {
+  value = data.archive_file.code_archive.output_base64sha256
 }
