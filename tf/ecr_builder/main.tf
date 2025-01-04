@@ -70,12 +70,23 @@ variable "triggers" {
 
 locals {
   dst_tag = "${var.name}-${var.dst_tag}"
+  all_triggers = merge({
+    "aws_account_id" = var.aws_account_id
+    "aws_region"     = var.aws_region
+    "ecr_name"       = var.ecr_name
+    "ecr_url"        = var.ecr_url
+    "name"           = var.name
+    "docker_file"    = filemd5(var.docker_file)
+    "src_image"      = var.src_image
+    "src_tag"        = var.src_tag
+    "dst_tag"        = var.dst_tag
+  }, var.triggers)
 }
 
 # Resources
 
 resource "null_resource" "image_build" {
-  triggers = var.triggers
+  triggers = local.all_triggers
 
   provisioner "local-exec" {
     command = <<EOF
